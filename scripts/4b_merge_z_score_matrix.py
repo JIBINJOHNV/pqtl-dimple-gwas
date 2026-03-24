@@ -7,12 +7,12 @@ from datetime import datetime
 # --- CONFIGURATION ---
 INPUT_DIR = Path("/mnt/fast/Analysis/ukb-ppp_harmonisation/ukb-ppp_zscore_matrix/")
 TEMP_DIR = Path("/mnt/fast/Analysis/ukb-ppp_harmonisation/temp_batches/")
-FINAL_OUTPUT = Path("/mnt/fast/Analysis/ukb-ppp_harmonisation/ukb_ppp_zscore_full_matrix.tsv.gz")
+FINAL_OUTPUT = Path("/mnt/fast/Analysis/ukb-ppp_harmonisation/ukb-ppp_zscore_matrix/ukb_ppp_zscore_full_matrix.tsv")
 BATCH_SIZE = 200
 
 # Setup
 TEMP_DIR.mkdir(parents=True, exist_ok=True)
-log_path = f"merge_audit_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+log_path = f"merge_z_score_audit_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
 
 logging.basicConfig(
     level=logging.INFO, 

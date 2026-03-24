@@ -20,16 +20,17 @@ pip install synapseclient
 To download the data, you must create an account on [(Synapse)](https://www.synapse.org/Home:x). Detailed instructions can be found [(here)]((docs/synapse.md))
 
 ```rust
-mkdir -p /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/UKB-PPP_syn51365303/ 
+mkdir -p /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/UKB-PPP_European_syn51365303/
 
 nohup synapse get \
   --recursive \
-  --downloadLocation /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/UKB-PPP_syn51365303/ \
+  --downloadLocation /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/UKB-PPP_European_syn51365303/ \
   syn51365303 \
-  > download_UKB-PPP_East_Asian_syn51365303.log 2>&1 &
+  > /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/UKB-PPP_European_syn51365303/download_UKB-PPP_European_syn51365303.log 2>&1 &
 ```
 
-A total of 2,940 files were downloaded and are stored in the directory: /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/UKB-PPP_European_syn51365303. Each file is in a compressed .tar format and contains 23 chromosome-specific files (Autosomes 1–22 and Chromosome X).  Each of the 23 chromosome-specific files extracted from the .tar archives follows the standard GWAS summary statistics format shown below: 
+### Download sumamry
+A total of 2,940 files were downloaded and are stored in the directory: /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/UKB-PPP_European_syn51365303/ . Each file is in a compressed .tar format and contains 23 chromosome-specific files (Autosomes 1–22 and Chromosome X).  Each of the 23 chromosome-specific files extracted from the .tar archives follows the standard GWAS summary statistics format shown below: 
 
 | CHROM | GENPOS | ID | ALLELE0 | ALLELE1 | A1FREQ | INFO | N | TEST | BETA | SE | CHISQ | LOG10P | EXTRA |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -45,12 +46,13 @@ A total of 2,940 files were downloaded and are stored in the directory: /mnt/net
 
 In the summary statistics files, the GENPOS column is mapped to the GRCh38 coordinate system; however, the variant ID column (formatted as CHR:POS:REF:ALT:imp:v1) utilizes the GRCh37 (hg19) positions.
 
-### Metadata download
+A1 is effect allele and P value is in minus log10 format
+
+## Metadata download
 
 All metadata associated with the summary statistics files was downloaded from Synapse [(synapse)](https://www.synapse.org/Synapse:syn51396703). This file contains essential mapping and annotation details, including RSIDs and protein annotations for each protein in the UKB-PPP dataset
 
 ```rust
-
 mkdir -p /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/Metadata/ 
 
 nohup synapse get \
@@ -72,7 +74,7 @@ Metadata File Locations
         SNP RSID Maps: /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/Metadata/SNP_RSID_maps/ 
 
 Genome Build Clarification
-"The gene positions (gene_start, gene_end) provided in the following metadata files are mapped to the GRCh38 coordinate system:
+The gene positions (gene_start, gene_end) provided in the following metadata files are mapped to the GRCh38 coordinate system:
 
         /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/Metadata/Protein_annotation/olink_protein_map_1.5k_v1.tsv
         /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/Metadata/Protein_annotation/olink_protein_map_3k_v1.tsv"
@@ -97,9 +99,10 @@ The comand used is below
 nohup python \
     -u /mnt/fast/Analysis/ukb-ppp_harmonisation/chr_mered_data/2_merged_file_row_count.py > \
     /mnt/fast/Analysis/ukb-ppp_harmonisation/chr_mered_data/2_merged_file_row_count.log 2>&1 &
+
 ```
 
-Output Locations:
+### Output Locations:
 
         Analysis Results: /mnt/fast/Analysis/ukb-ppp_harmonisation/chr_mered_data/ukb-ppp_EUR_AllChr_merged_row_counts.csv
 
@@ -121,7 +124,7 @@ Manual count results can be found at : /mnt/nethome/jjohn41/gwas_sumstat/raw_dat
 
 # STEP 4: Harmonisation
 
-This step automates the harmonization of merged UKB-PPP summary statistics using the postgwas [(harmonization module)](https://github.com/JIBINJOHNV/postgwas). During this process, each protein pQTL summary statistic is converted into VCF format for two different genome builds: GRCh37 and GRCh38.
+This step automates the harmonization of merged UKB-PPP summary statistics using the postgwas [(harmonization module)](https://github.com/JIBINJOHNV/postgwas). During this process, each protein pQTL summary statistic is converted into VCF format for two different genome builds: GRCh37 and GRCh38. This step make sure **Alternative** allele will be the **EFECT** Allele
 
 The module also generates comprehensive Quality Control (QC) reports, providing metrics such as total variant counts, the number of variants successfully mapped to the VCF, variants meeting the INFO score > 0.7 threshold, and total SNP counts.
 
@@ -156,13 +159,51 @@ All harmonised output files are stored within the following root directory on th
 
 Each dataset is organized into a specific directory named after the protein or GWAS ID, with the final VCF files nested inside a `00_harmonised_sumstat/` subfolder.
 
-**Example Path:**
-```text
-/mnt/fast/Analysis/ukb-ppp_harmonisation/harmonised_vcf_files/NARS1_O43776_OID31035_v1_Neurology_II/00_harmonised_sumstat/
-```
+**Example Path: and files**
+`/mnt/fast/Analysis/ukb-ppp_harmonisation/harmonised_vcf_files/YTHDF3_Q7Z739_OID20478_v1_Inflammation/00_harmonised_sumstat/`
+
+
+-   logs
+-   qc_summary                                                          
+-   YTHDF3_Q7Z739_OID20478_v1_Inflammation_GRCh37_notlifted_merged.vcf.gz
+-   YTHDF3_Q7Z739_OID20478_v1_Inflammation_GRCh37_notlifted_merged.vcf.gz.tbi
+-   YTHDF3_Q7Z739_OID20478_v1_Inflammation_GRCh37_merged.vcf.gz      
+-   YTHDF3_Q7Z739_OID20478_v1_Inflammation_GRCh38_merged.vcf.gz
+-   YTHDF3_Q7Z739_OID20478_v1_Inflammation_GRCh37_merged.vcf.gz.tbi  
+-   YTHDF3_Q7Z739_OID20478_v1_Inflammation_GRCh38_merged.vcf.gz.tbi
+-   YTHDF3_Q7Z739_OID20478_v1_Inflammation_GRCh37_mhc_exclude.bed    
+-   YTHDF3_Q7Z739_OID20478_v1_Inflammation_QC_sumamry.txt
+
+
+**Each vcf file contain following columns**
+`CHROM  POS     ID      REF     ALT QUAL    FILTER  INFO    FORMAT`
+
+
+
+**Format fields contains**
+-   ES:     Effect size estimate relative to the alternative allele
+-   SE:     Standard error of effect size estimate
+-   LP:     -log10 p-value for effect estimate
+-   AF:     Alternate allele frequency in the association study
+-   EZ:     Z-score provided if it was used to derive the EFFECT and SE fields
+-   SI:     Accuracy score of summary data imputation
+-   SS:     Sample size used to estimate genetic effect
+-   NCO:    Number of control used to estimate genetic effect
+-   NEF:    Number of effective sample size, in case of case-control  Nef=4/(1/ncase + 1/ncontrol); for quantitative Nef=ncontrol
+-   NC:     Number of cases used to estimate genetic effect
+-   ID:     Study variant identifier
+
+**INFO field**
+
+-   AFR:        Allele frequency for African populations in NCBI ALFA
+-   EAS:        Allele frequency for East Asian populations in NCBI ALFA
+-   EUR:        Allele frequency for European populations in NCBI ALFA
+-   SAS:        Allele frequency for South Asian populations in NCBI ALFA
+-   AF:         Alternate allele frequency in the association study
 
 # STEP 5: Post-Harmonisation Quality Control (QC)
 
+### STEP 5a: Count total variants and variant type in all vcf files
 In this step, a comprehensive summary is generated for the three VCF outputs (_GRCh38_merged, _GRCh37_merged, and GRCh37_notlifted) across all 2,940 harmonised datasets.
 
 The summary statistics for each file include:
@@ -174,9 +215,6 @@ The summary statistics for each file include:
         Number of others
         Number of sites (Total variant count)
 
-Validation & Data Integrity
-Upon completion, the Number of sites from the _GRCh38_merged.vcf.gz files is cross-referenced against the QC file generated in STEP 3 (/mnt/fast/Analysis/ukb-ppp_harmonisation/chr_mered_data/ukb-ppp_EUR_AllChr_merged_row_counts.csv). This comparison is critical to identify and quantify any variant loss that may have occurred during the harmonisation process.
-
 ```rust
 nohup python \
     -u /mnt/fast/Analysis/ukb-ppp_harmonisation/3ba_post_harmonisation_QC.py > \
@@ -186,6 +224,11 @@ nohup python \
  ps -ef | grep 3ba_post_harmonisation_QC.py
 ```
 
+### STEP5b: Validation & Data Integrity
+Upon completion, the Number of sites from the _GRCh38_merged.vcf.gz files is cross-referenced against the QC file generated in STEP 3 (/mnt/fast/Analysis/ukb-ppp_harmonisation/chr_mered_data/ukb-ppp_EUR_AllChr_merged_row_counts.csv). This comparison is critical to identify and quantify any variant loss that may have occurred during the harmonisation process.
+
+### STEP5c : Compare BETA AND P VALUE, FRQ OF HARMONISED VCF file and Raw data file (few random files)
+
 # STEP 6: Extract Z SCORE FROM Harmonised vcf files
 For the [(DIMPLE-GWAS)](https://github.com/mlamcogent/DIMPLE-GWAS)  pipeline, we extract Z-scores from harmonized summary statistics for approximately 86,000 high-quality SNPs. These variants were derived from the HapMap reference panel following LD pruning ($R^2 < 0.1$) based on the 1000 Genomes European (EUR) population.  The script used in this step can be found [(here)](scripts/4a_prepare_z_sore_matrix.py).
 
@@ -194,3 +237,75 @@ nohup python \
     -u /mnt/fast/Analysis/ukb-ppp_harmonisation/4_prepare_z_sore_matrix.py > \
     /mnt/fast/Analysis/ukb-ppp_harmonisation/4_prepare_z_sore_matrix.log 2>&1 & 
 ```
+
+##  Analysis outcome
+z score matrix from all 2940 proteis can be found in the folder /mnt/fast/Analysis/ukb-ppp_harmonisation/ukb-ppp_zscore_matrix/
+
+# Example matrix
+
+| CHROM | POS | ID | REF | ALT | ARMCX2_Q7L311_OID30792_v1_Neurology_II |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | 761147 | rs3115850 | T | C | -0.289212 |
+| 1 | 768448 | rs12562034 | G | A | 0.11331 |
+| 1 | 853954 | rs1806509 | C | A | 0.332909 |
+| 1 | 861808 | rs13302982 | A | G | 0.330929 |
+| 1 | 887560 | rs3748595 | A | C | 0.572105 |
+| 1 | 893981 | rs28415373 | C | T | -0.773974 |
+| 1 | 903104 | rs6696281 | C | T | -1.92417 |
+| 1 | 908414 | rs28504611 | C | T | -1.19544 |
+| 1 | 940203 | rs35940137 | G | A | -0.172183 |
+
+### Batch wise merging of Individual Z score matrix to Single Matrix
+
+Key used to merge:  `CHROM, POS,ID,REF and ALT`
+
+```rust
+nohup python \
+    -u /mnt/fast/Analysis/ukb-ppp_harmonisation/4b_merge_z_score_matrix.py > \
+    /mnt/fast/Analysis/ukb-ppp_harmonisation/4b_merge_z_score_matrix.log 2>&1 & 
+```
+
+**Merged 86219 * 2945 Matrix can be found here**
+    
+    `/mnt/fast/Analysis/ukb-ppp_harmonisation/ukb-ppp_zscore_matrix/ukb_ppp_zscore_full_matrix.tsv`
+
+logfiles : 
+
+        `/mnt/fast/Analysis/ukb-ppp_harmonisation/merge_z_score_audit_20260324_180334.log`
+        `/mnt/fast/Analysis/ukb-ppp_harmonisation/4b_merge_z_score_matrix.log`
+        `/mnt/fast/Analysis/ukb-ppp_harmonisation/ukb-ppp_zscore_matrix/zscore_extraction_audit_report.tsv`
+        `/mnt/fast/Analysis/ukb-ppp_harmonisation/ukb-ppp_zscore_matrix/zscore_extraction_pipeline_20260324_153352.log`
+
+```rust
+import pandas as pd 
+df=pd.read_csv('/mnt/fast/Analysis/ukb-ppp_harmonisation/ukb-ppp_zscore_matrix/ukb_ppp_zscore_full_matrix.tsv',sep="\t")
+ 
+df.shape # (86219, 2945)
+df2=df.isna().sum().reset_index(drop=True)
+df2[df2[0]>1].reset_index(drop=True)
+df2[df2[0]>5].reset_index(drop=True)
+df2[df2[0]>10].reset_index(drop=True)
+```
+
+# Protein Variant Summary
+
+A quality control check was performed across the summary statistics (sumstats) to identify missingness in the Z score matrix.
+
+1,587 sumstats have at least 1 missing variant.
+
+36 sumstats have at least 5 missing variants.
+
+7 sumstats have at least 10 missing variants. (Adjusted for logical progression)
+
+| Index | Protein Assay Identifier | Count |
+| :--- | :--- | :--- |
+| 0 | AMY2B_P19961_OID20340_v1_Cardiometabolic | 14 |
+| 1 | CST1_P01037_OID30581_v1_Inflammation_II | 28 |
+| 2 | CTSD_P07339_OID20358_v1_Cardiometabolic | 15 |
+| 3 | CTSS_P25774_OID21056_v1_Neurology | 97 |
+| 4 | ENDOU_P21128_OID31498_v1_Oncology_II | 12 |
+| 5 | NPM1_P06748_OID20961_v1_Neurology | 2132 |
+| 6 | PCOLCE_Q15113_OID20384_v1_Cardiometabolic | 1318 |
+| 7 | TACSTD2_P09758_OID21447_v1_Oncology | 24 |
+
+# STEP 7 :  Should we perform heritability estimation using (LDSC) to identify and remove proteins with low heritability?
