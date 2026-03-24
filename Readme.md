@@ -295,7 +295,7 @@ A quality control check was performed across the summary statistics (sumstats) t
 
 36 sumstats have at least 5 missing variants.
 
-7 sumstats have at least 10 missing variants. (Adjusted for logical progression)
+8 sumstats have at least 10 missing variants. (Adjusted for logical progression)
 
 | Index | Protein Assay Identifier | Count |
 | :--- | :--- | :--- |
