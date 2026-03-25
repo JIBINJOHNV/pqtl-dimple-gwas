@@ -46,7 +46,29 @@ A total of 2,940 files were downloaded and are stored in the directory: /mnt/net
 
 In the summary statistics files, the GENPOS column is mapped to the GRCh38 coordinate system; however, the variant ID column (formatted as CHR:POS:REF:ALT:imp:v1) utilizes the GRCh37 (hg19) positions.
 
-A1 is effect allele and P value is in minus log10 format
+
+To keep your `README.md` clean and professional, you can use a structured list or a concise table to define these specific columns. 
+
+Based on the snippet you provided, here is the most accurate information to include:
+
+### Column Definitions
+Here is the corrected and refined version for your `README.md`. I have streamlined the language to be more professional while keeping your specific notes about the coordinate systems and the INFO score observations.
+
+---
+
+* **CHROM**: Chromosome number (1-22, X, Y).
+* **GENPOS**: Genomic position (1-based; **GRCh38/Hg38** coordinates).
+* **ID**: Unique variant identifier (e.g., `22:16692181:G:A:imp:v1`), notably based on **GRCh37/Hg19** coordinates.
+* **ALLELE0**: Reference or non-effect allele.
+* **ALLELE1**: The **Effect Allele** (the specific allele to which the **BETA** and **A1FREQ** refer).
+* **A1FREQ**: Frequency of the effect allele (**ALLELE1**).
+* **INFO**: Imputation quality score. While typically ranging from 0 to 1, values **exceeding 1.0 (up to 1.7+)** have been observed.
+* **N**: Total sample size (number of individuals) included in the analysis for the variant.
+* **TEST**: Statistical model used for the association test (e.g., Additive).
+* **BETA**: Effect size estimate relative to the **ALLELE1**.
+* **SE**: Standard error of the **BETA** estimate.
+* **CHISQ**: Chi-squared statistic for the association test.
+* **LOG10P**: The **negative log10 p-value** ($-\log_{10}P$).
 
 ## Metadata download
 
@@ -121,6 +143,11 @@ To confirm the accuracy of the automated pipeline, the four files with the lowes
 | CST1 (P01037_OID30581_v1_Inflammation_II) | 15,598,905 | 15,598,905 | VALID |
 
 Manual count results can be found at : /mnt/nethome/jjohn41/gwas_sumstat/raw_data/UKB-PPP/UKB-PPP_European_syn51365303/test/protein_counts.txt
+
+
+## Main Observation 
+> [!IMPORTANT]
+> **INFO Score Note**: Some scores have been observed exceeding the 1.0 threshold, reaching values up to **1.7**.
 
 # STEP 4: Harmonisation
 
@@ -263,9 +290,12 @@ Key used to merge:  `CHROM, POS,ID,REF and ALT`
 nohup python \
     -u /mnt/fast/Analysis/ukb-ppp_harmonisation/4b_merge_z_score_matrix.py > \
     /mnt/fast/Analysis/ukb-ppp_harmonisation/4b_merge_z_score_matrix.log 2>&1 & 
+
+## Delete intermediate files
+rm -rf /mnt/fast/Analysis/ukb-ppp_harmonisation/temp_batches/
 ```
 
-**Merged 86219 * 2945 Matrix can be found here**
+**Merged `86219 * 2945` Matrix can be found here**
     
     `/mnt/fast/Analysis/ukb-ppp_harmonisation/ukb-ppp_zscore_matrix/ukb_ppp_zscore_full_matrix.tsv`
 
