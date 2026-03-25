@@ -201,25 +201,25 @@ Each dataset is organized into a specific directory named after the protein or G
 
 
 **Format fields contains**
--   ES:     Effect size estimate relative to the alternative allele
--   SE:     Standard error of effect size estimate
--   LP:     -log10 p-value for effect estimate
--   AF:     Alternate allele frequency in the association study
--   EZ:     Z-score provided if it was used to derive the EFFECT and SE fields
--   SI:     Accuracy score of summary data imputation
--   SS:     Sample size used to estimate genetic effect
--   NCO:    Number of control used to estimate genetic effect
--   NEF:    Number of effective sample size, in case of case-control  Nef=4/(1/ncase + 1/ncontrol); for quantitative Nef=ncontrol
--   NC:     Number of cases used to estimate genetic effect
--   ID:     Study variant identifier
+-   **ES**:     Effect size estimate relative to the alternative allele
+-   **SE**:     Standard error of effect size estimate
+-   **LP**:     -log10 p-value for effect estimate
+-   **AF**:     Alternate allele frequency in the association study
+-   **EZ**:     Z-score provided if it was used to derive the EFFECT and SE fields
+-   **SI**:     Accuracy score of summary data imputation
+-   **SS**:     Sample size used to estimate genetic effect
+-   **NCO**:    Number of control used to estimate genetic effect
+-   **NEF**:    Number of effective sample size, in case of case-control  Nef=4/(1/ncase + 1/ncontrol); for quantitative Nef=ncontrol
+-   **NC**:     Number of cases used to estimate genetic effect
+-   **ID**:     Study variant identifier
 
 **INFO field**
 
--   AFR:        Allele frequency for African populations in NCBI ALFA
--   EAS:        Allele frequency for East Asian populations in NCBI ALFA
--   EUR:        Allele frequency for European populations in NCBI ALFA
--   SAS:        Allele frequency for South Asian populations in NCBI ALFA
--   AF:         Alternate allele frequency in the association study
+-   **AFR**:        Allele frequency for African populations in NCBI ALFA
+-   **EAS**:        Allele frequency for East Asian populations in NCBI ALFA
+-   **EUR**:        Allele frequency for European populations in NCBI ALFA
+-   **SAS**:        Allele frequency for South Asian populations in NCBI ALFA
+-   **AF**:         Alternate allele frequency in the association study
 
 # STEP 5: Post-Harmonisation Quality Control (QC)
 
@@ -244,10 +244,10 @@ nohup python \
  ps -ef | grep 3ba_post_harmonisation_QC.py
 ```
 
-### STEP5b: Validation & Data Integrity
+### STEP 5b: Validation & Data Integrity
 Upon completion, the Number of sites from the _GRCh38_merged.vcf.gz files is cross-referenced against the QC file generated in STEP 3 (/mnt/fast/Analysis/ukb-ppp_harmonisation/chr_mered_data/ukb-ppp_EUR_AllChr_merged_row_counts.csv). This comparison is critical to identify and quantify any variant loss that may have occurred during the harmonisation process.
 
-### STEP5c : Compare BETA, P VALUE, SI and AF  OF Harmonised VCF file and Raw data file (few random files)
+### STEP 5c : Compare BETA, P VALUE, SI and AF  OF Harmonised VCF file and Raw data file (few random files)
 
 # STEP 6: Extract Z SCORE FROM Harmonised vcf files
 For the [(DIMPLE-GWAS)](https://github.com/mlamcogent/DIMPLE-GWAS)  pipeline, we extract Z-scores from harmonized summary statistics for approximately 86,000 high-quality SNPs. These variants were derived from the HapMap reference panel following LD pruning ($R^2 < 0.1$) based on the 1000 Genomes European (EUR) population.  The script used in this step can be found [(here)](scripts/4a_prepare_z_sore_matrix.py).
