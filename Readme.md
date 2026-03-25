@@ -46,14 +46,7 @@ A total of 2,940 files were downloaded and are stored in the directory: /mnt/net
 
 In the summary statistics files, the GENPOS column is mapped to the GRCh38 coordinate system; however, the variant ID column (formatted as CHR:POS:REF:ALT:imp:v1) utilizes the GRCh37 (hg19) positions.
 
-
-To keep your `README.md` clean and professional, you can use a structured list or a concise table to define these specific columns. 
-
-Based on the snippet you provided, here is the most accurate information to include:
-
 ### Column Definitions
-Here is the corrected and refined version for your `README.md`. I have streamlined the language to be more professional while keeping your specific notes about the coordinate systems and the INFO score observations.
-
 ---
 
 * **CHROM**: Chromosome number (1-22, X, Y).
@@ -254,7 +247,7 @@ nohup python \
 ### STEP5b: Validation & Data Integrity
 Upon completion, the Number of sites from the _GRCh38_merged.vcf.gz files is cross-referenced against the QC file generated in STEP 3 (/mnt/fast/Analysis/ukb-ppp_harmonisation/chr_mered_data/ukb-ppp_EUR_AllChr_merged_row_counts.csv). This comparison is critical to identify and quantify any variant loss that may have occurred during the harmonisation process.
 
-### STEP5c : Compare BETA AND P VALUE, FRQ OF HARMONISED VCF file and Raw data file (few random files)
+### STEP5c : Compare BETA, P VALUE, SI and AF  OF Harmonised VCF file and Raw data file (few random files)
 
 # STEP 6: Extract Z SCORE FROM Harmonised vcf files
 For the [(DIMPLE-GWAS)](https://github.com/mlamcogent/DIMPLE-GWAS)  pipeline, we extract Z-scores from harmonized summary statistics for approximately 86,000 high-quality SNPs. These variants were derived from the HapMap reference panel following LD pruning ($R^2 < 0.1$) based on the 1000 Genomes European (EUR) population.  The script used in this step can be found [(here)](scripts/4a_prepare_z_sore_matrix.py).
