@@ -1,11 +1,11 @@
 # PQTL-DIMPLE GWAS
 This repository contains the analytical pipeline for the PQTL-DIMPLE GWAS project. The workflow is designed for the large-scale processing and harmonisation of proteomic summary statistics across three major cohorts:
 
-UK Biobank (UKB-PPP): 2,940 protein summary statistics (pQTLs) as described in [(O’Donovan et al. (2023))](https://www.nature.com/articles/s41586-023-06592-6).
+**UK Biobank (UKB-PPP)**: 2,940 protein summary statistics (pQTLs) as described in [(O’Donovan et al. (2023))](https://www.nature.com/articles/s41586-023-06592-6).
 
-deCODE Genetics: 4,907 aptamers targeting 4,719 unique proteins, as reported in [(Ferkingstad et al. (2021))](https://www.nature.com/articles/s41588-021-00978-w#Sec14).
+**deCODE Genetics**: 4,907 aptamers targeting 4,719 unique proteins, as reported in [(Ferkingstad et al. (2021))](https://www.nature.com/articles/s41588-021-00978-w#Sec14).
 
-China Kadoorie Biobank (CKB): 2,923 Olink inflammation and cardiovascular traits accessible via [(CKB PheWeb)](https://pheweb.ckbiobank.org/).
+**China Kadoorie Biobank (CKB)**: 2,923 Olink inflammation and cardiovascular traits accessible via [(CKB PheWeb)](https://pheweb.ckbiobank.org/).
 
 # STEP1: Download UKB-PPP PQTL summary statistics from Synapse 
 The UK Biobank Pharma Proteomics Project (UKB-PPP) represents a major collaboration between the UK Biobank and thirteen biopharmaceutical companies to characterize the plasma proteomic profiles of 54,219 participants. This effort involved comprehensive protein quantitative trait loci (pQTL) mapping of 2,940 aptamers corresponding to 2,923 proteins, identifying 14,287 primary genetic associations—85% of which were previously undiscovered. The project also included ancestry-specific pQTL mapping in non-European populations and identified independent secondary associations in 87% of cis and 30% of trans loci, significantly expanding the catalog of genetic instruments available for downstream genomic analyses [(Sun et al., 2023)](https://www.nature.com/articles/s41586-023-06592-6).
